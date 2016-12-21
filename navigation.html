@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <link href="nav.css" type="text/css" rel="stylesheet">
+    <script src="jquery.min.js"></script>
+    <title>图片轮播</title>
+</head>
+<!--让中间轮播的图片局中显示-->
+<div class="center">
+    <!--控制图片显示的框，溢出部分隐藏起来-->
+<div class="slideview">
+       <!--显示图片-->
+    <ul class="nav">
+        <li><a href="#"><img src="img/image1.jpg"></a></li>
+        <li><a href="#"><img src="img/image2.jpg"></a></li>
+        <li><a href="#"><img src="img/image3.jpg"></a></li>
+        <li><a href="#"><img src="img/image4.jpg"></a></li>
+        <li><a href="#"><img src="img/image5.jpg"></a></li>
+    </ul>
+
+    <!--向左按钮-->
+    <div class="leftbutton">左️️</div>
+    <!--向左按钮-->
+    <div class="rightbutton">右️️</div>
+    <!--下面的提示点-->
+    <div class="point">
+    <ul>
+        <li class="checked"></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+    </div>
+</div>
+
+
+</div>
+
+<script>
+    var autoChange;
+    var curIndex = 0;
+    var imageNum = $("ul.nav li").length;
+
+    window.onload = function () {
+        autoChangeAgain();
+    };
+//  索引自增长
+    function curIndexChange() {
+        if (curIndex<imageNum-1)
+            curIndex++;
+        else
+            curIndex = 0;
+    }
+//    定时器
+    function autoChangeAgain(){
+        autoChange = setInterval(function(){
+            curIndexChange();
+            gotoImage(curIndex);
+        },4000);
+    }
+//    根据索引移动图片和圆点样式
+    function gotoImage(num){
+        var goLeft = num * 900;
+        $("ul.nav").animate({right: goLeft + "px"},500);
+        $(".point li").removeClass("checked").eq(num).addClass("checked");
+    }
+//    左边按钮事件
+    $(".leftbutton").click(function () {
+        clearInterval(autoChange);
+        if (curIndex > 0)
+            curIndex--;
+        else
+            curIndex = 4;
+        gotoImage(curIndex);
+        autoChangeAgain();
+    });
+//    右边按钮事件
+    $(".rightbutton").click(function () {
+        clearInterval(autoChange);
+        curIndexChange();
+        gotoImage(curIndex);
+        autoChangeAgain();
+    });
+//    下面圆点的点击事件
+    $(".point ul li").click(function () {
+        clearInterval(autoChange);
+        curIndex = $(this).index();
+        gotoImage(curIndex);
+        autoChangeAgain();
+    });
+</script>
+</body>
+</html>
